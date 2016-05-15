@@ -322,7 +322,7 @@ class MapRenderer extends React.Component {
       left : pos.w + 'px',
       top : pos.h + 'px',
       width : this.props.game.width * this.props.game.tileSize + 'px',
-      height : this.props.game.height * this.props.game.tileSize + 'px';
+      height : this.props.game.height * this.props.game.tileSize + 'px'
     };
 
     let cls = this.props.game.overcast ? 'level-board overcast' : 'level-board';
