@@ -336,3 +336,79 @@ class MapRenderer extends React.Component {
     );
   }
 }
+
+class GameBoard extends React.Component {
+  componentDidMount() {
+    document.addEventListener('keydown', this.onKey.bind(this), true);
+  }
+
+  restartGame() {
+    this.props.dispatch(Map.createMap(new Map().load(dngMap)));
+  }
+
+  onKey(e) {
+    switch (e.code) {
+      case 'KeyW':
+        this.props.dispatch(Map.movePlayer(0, -1));
+        break;
+      case 'KeyS':
+        this.props.dispatch(Map.movePlayer(0, 1));
+        break;
+      case 'KeyA':
+        this.props.dispatch(Map.movePlayer(-1, 0));
+        break;
+      case 'KeyD':
+        this.props.dispatch(Map.movePlayer(1, 0));
+        break;
+    }
+    e.preventDefault();
+  }
+
+  render() {
+    rreturn (
+      <div className="game-container">
+        <div className="game-board text-center">
+          <h3>Roguelike Dungeon Crawler</h3>
+          <div className="board-info">
+            <span><i className="fa fa-star"></i>
+              {this.props.game.player.level}</span>
+            <span><i className="fa fa-paw"></i>
+              {this.props.game.player.getDamage()}</span>
+            <span><i className="fa fa-heart"></i>
+             {this.props.game.player.health}
+            </span>
+            <span><i className="fa fa-gavel"></i>
+              {this.props.game.player.weapon}
+            </span>
+            <span><i className="fa fa-gamepad"></i>
+             awsd</span>
+            <small className="label" onClick={this.props.dispatch.bind(this,Map.toggleVis())}>Full View</small>
+          </div>
+         { this.props.game.gameOver ?
+            <div className="game-over text-center"
+              onClick={this.restartGame.bind(this)}>
+              {this.props.game.youWin ?
+                <span>you win</span>
+               :
+                <span>game over</span>
+              }
+             </div>
+          :
+          <MapRenderer game={this.props.game} />
+         }
+        </div>
+      </div>
+    );
+  }
+}
+
+let gameStore = Redux.createStore(Map.reducer);
+let ConnectedBoard = ReactRedux.connect((state) => {
+  return { game : state }
+})
+(GameBoard);
+let Provider = ReactRedux.Provider;
+
+gameStore.dispatch(Map.createMap(new Map().load(dngMap)));
+
+React.render(<Provider store={gameStore}><ConnectedBoard /></Provider>, document.body);
