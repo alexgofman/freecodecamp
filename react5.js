@@ -365,7 +365,7 @@ class GameBoard extends React.Component {
   }
 
   render() {
-    rreturn (
+    return (
       <div className="game-container">
         <div className="game-board text-center">
           <h3>Roguelike Dungeon Crawler</h3>
